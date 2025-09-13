@@ -1,14 +1,22 @@
+import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
-import { ThemeSwitch } from "@/components/theme-switch";
 
-function attendance() {
+function Attendance() {
   return (
-    <div>
+     <div className="flex h-screen bg-content1">
+      {/* Sidebar kiri */}
       <Sidebar />
-      <ThemeSwitch className="absolute top-4 right-4 z-50" />
-      <div className="flex h-screen bg-content1">Attendance</div>
+
+      {/* Konten kanan */}
+      <div className="flex flex-col flex-1">
+        {/* Navbar atas */}
+        <Navbar />
+
+        {/* Konten halaman */}
+        <div className="p-4">attendance</div>
+      </div>
     </div>
   );
 }
 
-export default attendance;
+export default Attendance;
