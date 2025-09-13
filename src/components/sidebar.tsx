@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Tooltip } from "@heroui/react";
 import { useNavigate, useLocation } from "react-router-dom";
+
+import { Role, userResponse, getUser } from "../types/user";
 
 interface NavItemProps {
   icon: string;
@@ -15,7 +17,6 @@ interface NavItemProps {
 const NavItem = ({
   icon,
   label,
-  path,
   isActive = false,
   isCollapsed = false,
   onClick,
@@ -41,14 +42,50 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isUser, setIsUser] = useState<userResponse | null>(null);
+  const [error, setError] = useState<String | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const handleNavigation = (path: string) => navigate(path);
 
-  const menuItems = [
-    { icon: "lucide:home", label: "Dashboard", path: "/" },
-    { icon: "lucide:bar-chart", label: "Analytics", path: "/analytics" },
+  const AllMenuItems = [
+    {
+      icon: "lucide:folder",
+      label: "Dashboard",
+      path: "/dashboard",
+      role: Role.ADMIN,
+    },
+    {
+      icon: "lucide:circle-check-big",
+      label: "Attendance",
+      path: "/attendance",
+    },
+    { icon: "lucide:user-pen", 
+      label: "biodata", 
+      path: "/me" },
   ];
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const data = await getUser();
+
+        setIsUser(data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load user data.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUser();
+  }, []);
+  const menuItems = AllMenuItems.filter(
+    (item) => !item.role || item.role === isUser?.role,
+  );
+
+  const initials = isUser?.username?.charAt(0).toUpperCase();
 
   return (
     <div
@@ -102,14 +139,14 @@ export const Sidebar = () => {
       {/* User Profile */}
       <Button
         disableRipple
-        className={`justify-start w-full transition-all duration-300 ${
+        className={`w-full transition-all duration-300 flex items-center justify-between ${
           isCollapsed ? "px-6" : "px-4"
         }`}
         color="default"
         endContent={
           !isCollapsed && (
             <Icon
-              className="text-default-400 ml-6"
+              className="text-default-400"
               height={24}
               icon="lucide:chevron-down"
               width={24}
@@ -117,9 +154,9 @@ export const Sidebar = () => {
           )
         }
         startContent={
-          <Tooltip content="John Doe" placement="right">
+          <Tooltip content={isUser?.username} placement="right">
             <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-500">
-              <span className="text-sm font-medium">JD</span>
+              <span className="text-sm font-medium">{initials}</span>
             </div>
           </Tooltip>
         }
@@ -127,8 +164,12 @@ export const Sidebar = () => {
       >
         {!isCollapsed && (
           <div className="flex flex-col items-start">
-            <span className="text-sm font-medium">John Doe</span>
-            <span className="text-xs text-default-500">john@example.com</span>
+            <span className="text-sm font-medium">{isUser?.username}</span>
+            <Tooltip content={isUser?.email}>
+              <span className="text-xs text-default-500 truncate block max-w-[96px]">
+                {isUser?.email}
+              </span>
+            </Tooltip>
           </div>
         )}
       </Button>
