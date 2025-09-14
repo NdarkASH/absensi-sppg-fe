@@ -5,7 +5,7 @@ import { Button, Card, CardBody, Input } from "@heroui/react";
 
 import { login as apiLogin } from "@/types/login";
 import { useAuth } from "@/components/AuthUser";
-import { Navbar } from "@/components/navbar";
+import { ThemeSwitch } from "@/components/theme-switch";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -39,13 +39,14 @@ const LoginPage = () => {
     bg-cover bg-center bg-no-repeat
     relative"
     >
-      <Navbar />
-
+      <div className="fixed bottom-4 right-4 z-50">
+        <ThemeSwitch />
+      </div>
       <div className="flex flex-1 items-center justify-center p-4">
         <Card className="h-full w-md bg-blue-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20 border border-gray-100">
           <CardBody>
             <h2 className="text-center text-2xl font-bold text-foreground mb-6">
-              Sign in to your account
+              Sign in
             </h2>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
@@ -62,7 +63,7 @@ const LoginPage = () => {
 
               <Input
                 isRequired
-                className="text-foreground"
+                className="text-foreground "
                 label="Password"
                 placeholder="Enter your password"
                 type="password"
@@ -71,6 +72,15 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
 
+              <p className="text-start mx-2 text-foreground text-xs">
+                Forgot password?{" "}
+                <Link
+                  className="font-semibold text-primary hover:underline"
+                  to="/change-password"
+                >
+                  Change password
+                </Link>
+              </p>
               {error && (
                 <p className="text-center text-sm text-red-500">{error}</p>
               )}
@@ -84,8 +94,8 @@ const LoginPage = () => {
                 Sign In
               </Button>
 
-              <p className="text-center text-sm text-foreground">
-                No account?{" "}
+              <p className="text-center text-sm text-mx text-foreground">
+                No have account?{" "}
                 <Link
                   className="font-semibold text-primary hover:underline"
                   to="/register"

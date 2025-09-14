@@ -2,40 +2,31 @@ import { Link } from "react-router-dom"; // Perbaiki import Link untuk react-rou
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, CardBody, Input } from "@heroui/react";
-import toast from "react-hot-toast";
 
-import { createUser } from "@/types/register";
+import { login as apiLogin } from "@/types/login";
+import { useAuth } from "@/components/AuthUser";
 import { ThemeSwitch } from "@/components/theme-switch";
 
-const RegisterPage = () => {
+const ChangePassword = () => {
   const [email, setEmail] = useState("");
-  const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    if (password !== confirmPassword) {
-      setError("Password and confirm password do not match!");
-      setIsLoading(false);
-
-      return;
-    }
-
     try {
-      await createUser({ username, email, password });
+      const loginResponse = await apiLogin({ email, password });
 
+      login(loginResponse.token);
       navigate("/home");
-      toast.success("Account created please to login");
     } catch (error: any) {
       setError(error?.response?.data?.message || "Login failed");
-      toast.error("Register error please try again");
     } finally {
       setIsLoading(false);
     }
@@ -51,12 +42,11 @@ const RegisterPage = () => {
       <div className="fixed bottom-4 right-4 z-50">
         <ThemeSwitch />
       </div>
-
       <div className="flex flex-1 items-center justify-center p-4">
         <Card className="h-full w-md bg-blue-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20 border border-gray-100">
           <CardBody>
             <h2 className="text-center text-2xl font-bold text-foreground mb-6">
-              Sign up
+              Please input You&rsquo;re email
             </h2>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
@@ -71,37 +61,6 @@ const RegisterPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
 
-              <Input
-                isRequired
-                className="text-foreground"
-                label="username"
-                placeholder="Enter your username"
-                type="username"
-                value={username}
-                variant="bordered"
-                onChange={(e) => setUserName(e.target.value)}
-              />
-              <Input
-                isRequired
-                className="text-foreground"
-                label="Password"
-                placeholder="Enter your password"
-                type="password"
-                value={password}
-                variant="bordered"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Input
-                isRequired
-                className="text-foreground"
-                label="Password"
-                placeholder="Enter your password"
-                type="password"
-                value={confirmPassword}
-                variant="bordered"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-
               {error && (
                 <p className="text-center text-sm text-red-500">{error}</p>
               )}
@@ -112,16 +71,16 @@ const RegisterPage = () => {
                 isLoading={isLoading}
                 type="submit"
               >
-                Sign In
+                Submit
               </Button>
 
               <p className="text-center text-sm text-mx text-foreground">
-                have account?{" "}
+                No account?{" "}
                 <Link
                   className="font-semibold text-primary hover:underline"
-                  to="/login"
+                  to="/register"
                 >
-                  Login
+                  Register
                 </Link>
               </p>
             </form>
@@ -132,4 +91,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default ChangePassword;

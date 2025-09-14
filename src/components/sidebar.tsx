@@ -8,6 +8,7 @@ import getUser, { userResponse } from "../types/user";
 import { useAuth } from "./AuthUser";
 
 import { siteConfig } from "@/config/site";
+import { apiResponse } from '../types/apiResponse';
 
 interface NavItemProps {
   icon: string;
@@ -47,7 +48,7 @@ export const Sidebar = () => {
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isUser, setIsUser] = useState<userResponse | null>(null);
-  const [error, setError] = useState<String | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { token, logout, isAuthenticated } = useAuth();
 

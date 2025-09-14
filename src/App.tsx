@@ -5,6 +5,7 @@ import Biodata from "./pages/biodata";
 import Home from "./pages/home";
 import { AuthProvider } from "./components/AuthUser";
 import RegisterPage from "./pages/register";
+import ChangePassword from "./pages/changePassword";
 
 import IndexPage from "@/pages/login";
 import PricingPage from "@/pages/pricing";
@@ -22,6 +23,7 @@ function App() {
         <Route element={<IndexPage />} path="/" />
         <Route element={<RegisterPage />} path="/register" />
         <Route element={<Home />} path="/home" />
+        <Route element={<ChangePassword />} path="/change-password" />
         <Route element={<Biodata />} path="/me" />
         <Route element={<PricingPage />} path="/pricing" />
         <Route element={<BlogPage />} path="/blog" />
