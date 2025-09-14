@@ -9,15 +9,15 @@ export enum Role {
 }
 
 export interface userResponse {
-  userId: String;
+  userId: string;
 
-  username: String;
+  username: string;
 
-  email: String;
+  email: string;
 
   role: Role;
 
-  isActive: Boolean;
+  isActive: boolean;
 
   createdAt: Date;
 
@@ -25,10 +25,14 @@ export interface userResponse {
 }
 
 export async function getUser(): Promise<userResponse> {
-  const response: AxiosResponse<apiResponse<userResponse>> =
-    await apiClient.get("/user");
+  try {
+    const response: AxiosResponse<apiResponse<userResponse>> =
+      await apiClient.get("/home");
 
-  return response.data.data;
+    return response.data.data;
+  } catch (error: any) {
+    throw error;
+  }
 }
 
 export default getUser;

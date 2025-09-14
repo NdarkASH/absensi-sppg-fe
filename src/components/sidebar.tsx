@@ -3,7 +3,11 @@ import { Icon } from "@iconify/react";
 import { Button, Tooltip } from "@heroui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Role, userResponse, getUser } from "../types/user";
+import getUser, { userResponse } from "../types/user";
+
+import { useAuth } from "./AuthUser";
+
+import { siteConfig } from "@/config/site";
 
 interface NavItemProps {
   icon: string;
@@ -45,46 +49,42 @@ export const Sidebar = () => {
   const [isUser, setIsUser] = useState<userResponse | null>(null);
   const [error, setError] = useState<String | null>(null);
   const [loading, setLoading] = useState(true);
+  const { token, logout, isAuthenticated } = useAuth();
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const handleNavigation = (path: string) => navigate(path);
 
-  const AllMenuItems = [
-    {
-      icon: "lucide:folder",
-      label: "Dashboard",
-      path: "/dashboard",
-      role: Role.ADMIN,
-    },
-    {
-      icon: "lucide:circle-check-big",
-      label: "Attendance",
-      path: "/attendance",
-    },
-    { icon: "lucide:user-pen", 
-      label: "biodata", 
-      path: "/me" },
-  ];
-
   useEffect(() => {
-    async function fetchUser() {
-      try {
-        const data = await getUser();
+    const fetchUser = async () => {
+      if (!token || !isAuthenticated) {
+        navigate("/login");
 
-        setIsUser(data);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load user data.");
+        return;
+      }
+
+      try {
+        const response = await getUser();
+
+        setIsUser(response);
+      } catch (error: any) {
+        if (error === 401) {
+          logout();
+          navigate("/login");
+        }
       } finally {
         setLoading(false);
       }
-    }
+    };
+
     fetchUser();
-  }, []);
-  const menuItems = AllMenuItems.filter(
+  }, [token, isAuthenticated, logout, navigate]);
+
+  
+ const menuItems = siteConfig.sideBarMenuItems.filter(
     (item) => !item.role || item.role === isUser?.role,
   );
 
+  if (loading) return <div>Loading...</div>;
   const initials = isUser?.username?.charAt(0).toUpperCase();
 
   return (

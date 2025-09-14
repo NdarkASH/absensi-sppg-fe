@@ -1,9 +1,12 @@
 import { Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import Biodata from "./pages/biodata";
+import Home from "./pages/home";
+import { AuthProvider } from "./components/AuthUser";
+import RegisterPage from "./pages/register";
 
 import IndexPage from "@/pages/login";
-import DocsPage from "@/pages/docs";
 import PricingPage from "@/pages/pricing";
 import BlogPage from "@/pages/blog";
 import AboutPage from "@/pages/about";
@@ -12,16 +15,20 @@ import Attendance from "@/pages/attendance";
 
 function App() {
   return (
-    <Routes>
-      <Route element={<LoginPage />} path="/login" />
-      <Route element={<IndexPage />} path="/" />
-      <Route element={<DocsPage />} path="/docs" />
-      <Route element={<Biodata />} path="/me" />
-      <Route element={<PricingPage />} path="/pricing" />
-      <Route element={<BlogPage />} path="/blog" />
-      <Route element={<AboutPage />} path="/about" />
-      <Route element={<Attendance />} path="/attendance" />
-    </Routes>
+    <AuthProvider>
+      <Toaster />
+      <Routes>
+        <Route element={<LoginPage />} path="/login" />
+        <Route element={<IndexPage />} path="/" />
+        <Route element={<RegisterPage />} path="/register" />
+        <Route element={<Home />} path="/home" />
+        <Route element={<Biodata />} path="/me" />
+        <Route element={<PricingPage />} path="/pricing" />
+        <Route element={<BlogPage />} path="/blog" />
+        <Route element={<AboutPage />} path="/about" />
+        <Route element={<Attendance />} path="/attendance" />
+      </Routes>
+    </AuthProvider>
   );
 }
 

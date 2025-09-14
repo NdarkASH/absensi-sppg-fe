@@ -16,7 +16,7 @@ export const Logo: React.FC<IconSvgProps> = ({
   >
     <path
       clipRule="evenodd"
-      d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
+      d="https://upload.wikimedia.org/wikipedia/id/2/29/Logo_Badan_Gizi_Nasional.svg"
       fill="currentColor"
       fillRule="evenodd"
     />
@@ -132,7 +132,7 @@ export const SunFilledIcon = ({
   </svg>
 );
 
-export const HeartFilledIcon = ({
+export const LogOutIcon = ({
   size = 24,
   width,
   height,
@@ -142,21 +142,21 @@ export const HeartFilledIcon = ({
     aria-hidden="true"
     focusable="false"
     height={size || height}
-    role="presentation"
-    viewBox="0 0 24 24"
     width={size || width}
+    viewBox="0 0 24 24"
+    role="presentation"
     {...props}
   >
     <path
-      d="M12.62 20.81c-.34.12-.9.12-1.24 0C8.48 19.82 2 15.69 2 8.69 2 5.6 4.49 3.1 7.56 3.1c1.82 0 3.43.88 4.44 2.24a5.53 5.53 0 0 1 4.44-2.24C19.51 3.1 22 5.6 22 8.69c0 7-6.48 11.13-9.38 12.12Z"
-      fill="currentColor"
+      d="M16 17l5-5-5-5M21 12H9M13 5v-1a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1"
+      stroke="currentColor"
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth={1.5}
+      fill="none"
     />
   </svg>
 );
-
 export const SearchIcon = (props: IconSvgProps) => (
   <svg
     aria-hidden="true"

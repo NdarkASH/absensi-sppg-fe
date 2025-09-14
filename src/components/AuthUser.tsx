@@ -19,6 +19,7 @@ interface AuthContextType {
   user: AuthUser | null;
   login: (token: string) => Promise<void>;
   logout: () => void;
+  token: string | null;
 }
 
 interface AuthProviderProps {
@@ -82,6 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user,
     login,
     logout,
+    token,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

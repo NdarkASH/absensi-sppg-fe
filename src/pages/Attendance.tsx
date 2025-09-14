@@ -3,7 +3,7 @@ import { Sidebar } from "@/components/sidebar";
 
 function Attendance() {
   return (
-     <div className="flex h-screen bg-content1">
+    <div className="flex h-screen bg-content1">
       {/* Sidebar kiri */}
       <Sidebar />
 

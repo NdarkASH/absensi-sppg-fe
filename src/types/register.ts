@@ -4,7 +4,7 @@ import { apiResponse } from "./apiResponse";
 import apiClient from "./client";
 
 interface registerRequest {
-  name: string;
+  username: string;
   email: string;
   password: string;
 }

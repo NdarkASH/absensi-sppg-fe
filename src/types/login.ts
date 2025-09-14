@@ -22,10 +22,6 @@ export async function login(payload: loginRequest): Promise<loginResponse> {
   return response.data.data;
 }
 
-export async function logout(): Promise<void> {
-  localStorage.removeItem("token");
-}
-
 const AxiosInterceptor = apiClient;
 
 AxiosInterceptor.interceptors.request.use(

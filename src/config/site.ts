@@ -1,63 +1,43 @@
+import { Role } from "@/types/user";
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Vite + HeroUI",
-  description: "Make beautiful websites regardless of your design experience.",
-  navItems: [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "Docs",
-      href: "/docs",
-    },
-    {
-      label: "Pricing",
-      href: "/pricing",
-    },
-    {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
-    },
-  ],
+  name: "Absensi dapur SPPG",
+  description: "website ini merupakan absen untuk pegawai dapur sppg",
+  navItems: [],
   navMenuItems: [
     {
-      label: "Profile",
+      label: "Biodata",
       href: "/profile",
     },
     {
       label: "Dashboard",
       href: "/dashboard",
+      Role: Role.ADMIN,
     },
     {
-      label: "Projects",
-      href: "/projects",
-    },
-    {
-      label: "Team",
-      href: "/team",
-    },
-    {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
+      label: "attendance",
+      href: "/attendance",
     },
     {
       label: "Logout",
       href: "/logout",
     },
+  ],
+  sideBarMenuItems: [
+    {
+      icon: "lucide:folder",
+      label: "Dashboard",
+      path: "/dashboard",
+      role: Role.ADMIN,
+    },
+    {
+      icon: "lucide:circle-check-big",
+      label: "Attendance",
+      path: "/attendance",
+    },
+    { icon: "lucide:user-pen", label: "biodata", path: "/me" },
   ],
   links: {
     github: "https://github.com/frontio-ai/heroui",

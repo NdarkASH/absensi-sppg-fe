@@ -1,17 +1,22 @@
+import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
-import { ThemeSwitch } from "@/components/theme-switch";
-import DefaultLayout from "@/layouts/default";
 
-function home() {
+function Home() {
   return (
-    <div>
+    <div className="flex h-screen bg-content1">
+      {/* Sidebar kiri */}
       <Sidebar />
-      <ThemeSwitch className="absolute top-4 right-4 z-50" />
-      <DefaultLayout>
-        <div className="flex h-screen bg-content1">home</div>
-      </DefaultLayout>
+
+      {/* Konten kanan */}
+      <div className="flex flex-col flex-1">
+        {/* Navbar atas */}
+        <Navbar />
+
+        {/* Konten halaman */}
+        <div className="p-4">Home</div>
+      </div>
     </div>
   );
 }
 
-export default home;
+export default Home;
