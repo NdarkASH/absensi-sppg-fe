@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:api": "npx openapi-generator-cli generate -i ../backend/openapi.json -g typescript-axios -o ./src/generated"
   },
   "dependencies": {
     "@heroui/button": "2.2.25",
@@ -46,6 +47,7 @@
     "@eslint/compat": "1.2.8",
     "@eslint/eslintrc": "3.3.1",
     "@eslint/js": "9.25.1",
+    "@openapitools/openapi-generator-cli": "^2.23.3",
     "@types/node": "20.5.7",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",

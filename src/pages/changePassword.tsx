@@ -3,17 +3,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, CardBody, Input } from "@heroui/react";
 
-import { login as apiLogin } from "@/types/login";
+import authService from "@/service/authService";
 import { useAuth } from "@/components/AuthUser";
 import { ThemeSwitch } from "@/components/theme-switch";
+import { changePassword } from "@/types/changePassword";
 
 const ChangePassword = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,10 +20,9 @@ const ChangePassword = () => {
     setIsLoading(true);
 
     try {
-      const loginResponse = await apiLogin({ email, password });
+      const response = await authService.changePassword({ email });
 
-      login(loginResponse.token);
-      navigate("/home");
+      navigate("/login");
     } catch (error: any) {
       setError(error?.response?.data?.message || "Login failed");
     } finally {

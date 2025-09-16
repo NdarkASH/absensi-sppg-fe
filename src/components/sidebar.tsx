@@ -3,12 +3,11 @@ import { Icon } from "@iconify/react";
 import { Button, Tooltip } from "@heroui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import getUser, { userResponse } from "../types/user";
-
 import { useAuth } from "./AuthUser";
 
+import userService from "@/service/userService";
 import { siteConfig } from "@/config/site";
-import { apiResponse } from '../types/apiResponse';
+import { userResponse } from "@/types/user";
 
 interface NavItemProps {
   icon: string;
@@ -64,7 +63,7 @@ export const Sidebar = () => {
       }
 
       try {
-        const response = await getUser();
+        const response = await userService.getUser();
 
         setIsUser(response);
       } catch (error: any) {
@@ -80,8 +79,7 @@ export const Sidebar = () => {
     fetchUser();
   }, [token, isAuthenticated, logout, navigate]);
 
-  
- const menuItems = siteConfig.sideBarMenuItems.filter(
+  const menuItems = siteConfig.sideBarMenuItems.filter(
     (item) => !item.role || item.role === isUser?.role,
   );
 

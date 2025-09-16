@@ -1,21 +1,21 @@
-import { AxiosResponse } from "axios";
-
-import apiClient from "./client";
 import { apiResponse } from "./apiResponse";
+import apiClient from "./client";
 
-interface changePasswordRequest {
+export interface changePasswordRequest {
   email: string;
 }
 
-interface changePasswordResponse {
+export interface changePasswordResponse {
   message: string;
 }
 
 export async function changePassword(
   payload: changePasswordRequest,
 ): Promise<changePasswordResponse> {
-  const response: AxiosResponse<apiResponse<changePasswordResponse>> =
-    await apiClient.post("/change-password", payload);
+  const response = await apiClient.post<apiResponse<changePasswordResponse>>(
+    "/change-password",
+    payload,
+  );
 
   return response.data.data;
 }

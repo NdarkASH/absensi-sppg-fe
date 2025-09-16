@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, CardBody, Input } from "@heroui/react";
 
-import { login as apiLogin } from "@/types/login";
+import authService from "../service/authService";
+
 import { useAuth } from "@/components/AuthUser";
 import { ThemeSwitch } from "@/components/theme-switch";
 
@@ -21,7 +22,7 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const loginResponse = await apiLogin({ email, password });
+      const loginResponse = await authService.login({ email, password });
 
       login(loginResponse.token);
       navigate("/home");

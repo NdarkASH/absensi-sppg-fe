@@ -1,102 +1,59 @@
+// components/AuthUser.tsx
 import {
   useState,
-  createContext,
   useEffect,
   useCallback,
+  createContext,
   useContext,
 } from "react";
 
-import { api } from "@/types/login"; // pastikan api sudah dikonfigurasi dengan benar
-
-interface AuthUser {
-  id: string;
-  name: string;
-  email: string;
-}
+import authService from "@/service/authService";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: AuthUser | null;
-  login: (token: string) => Promise<void>;
-  logout: () => void;
   token: string | null;
-}
-
-interface AuthProviderProps {
-  children: React.ReactNode;
+  login: (token: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<AuthUser | null>(null);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token"),
   );
 
   useEffect(() => {
-    const initializeAuth = async () => {
-      const storedToken = localStorage.getItem("token");
-
-      if (storedToken) {
-        try {
-          setIsAuthenticated(true);
-          setToken(storedToken);
-        } catch (error) {
-          localStorage.removeItem("token");
-          setIsAuthenticated(false);
-          setToken(null);
-          setUser(null);
-        }
-      }
-    };
-
-    initializeAuth();
-  }, []);
-
-  const login = useCallback(async (newToken: string) => {
-    try {
-      localStorage.setItem("token", newToken);
-      setToken(newToken);
-      setIsAuthenticated(true);
-    } catch (error) {
-      throw error;
-    }
-  }, []);
-
-  const logout = useCallback(() => {
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    setUser(null);
-    setToken(null);
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    }
+    if (token) setIsAuthenticated(true);
   }, [token]);
 
-  const value = {
-    isAuthenticated,
-    user,
-    login,
-    logout,
-    token,
-  };
+  const login = useCallback(async (newToken: string) => {
+    localStorage.setItem("token", newToken);
+    setToken(token);
+    setIsAuthenticated(true);
+  }, []);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const logout = useCallback(async () => {
+    await authService.logout();
+    localStorage.removeItem("token");
+    setToken(null);
+    setIsAuthenticated(false);
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const ctx = useContext(AuthContext);
 
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
 
-  return context;
+  return ctx;
 };
-
-export default AuthContext;

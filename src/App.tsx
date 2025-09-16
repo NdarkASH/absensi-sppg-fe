@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import { AuthProvider } from "./components/AuthUser";
 import RegisterPage from "./pages/register";
 import ChangePassword from "./pages/changePassword";
+import interceptorService from "./service/interceptorService";
 
 import IndexPage from "@/pages/login";
 import PricingPage from "@/pages/pricing";
@@ -15,6 +16,8 @@ import LoginPage from "@/pages/login";
 import Attendance from "@/pages/attendance";
 
 function App() {
+  interceptorService.setup();
+
   return (
     <AuthProvider>
       <Toaster />
