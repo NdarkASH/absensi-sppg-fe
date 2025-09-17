@@ -30,7 +30,11 @@ export const Navbar = () => {
       {/* Brand */}
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
-          <Link className="flex items-center gap-1" color="foreground" href="/home">
+          <Link
+            className="flex items-center gap-1"
+            color="foreground"
+            href="/home"
+          >
             <img
               alt="Badan Gizi Nasional"
               className="h-9 w-9 m-1"
@@ -74,7 +78,7 @@ export const Navbar = () => {
       {/* Mobile menu */}
       <NavbarMenu className="bg-default-100 p-4">
         <div className="flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
+          {siteConfig.navMenuItems.map((item) => (
             <NavbarMenuItem key={item.href ?? item.label}>
               <Link
                 color={
