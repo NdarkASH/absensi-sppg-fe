@@ -2,11 +2,10 @@ import { Link } from "react-router-dom"; // Perbaiki import Link untuk react-rou
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, CardBody, Input } from "@heroui/react";
+import toast from "react-hot-toast";
 
 import authService from "@/service/authService";
-import { useAuth } from "@/components/AuthUser";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { changePassword } from "@/types/changePassword";
 
 const ChangePassword = () => {
   const [email, setEmail] = useState("");
@@ -20,13 +19,13 @@ const ChangePassword = () => {
     setIsLoading(true);
 
     try {
-      const response = await authService.changePassword({ email });
-
+      await authService.changePassword({ email });
       navigate("/login");
     } catch (error: any) {
       setError(error?.response?.data?.message || "Login failed");
     } finally {
       setIsLoading(false);
+      toast.success("Password berhasil diganti dengan email");
     }
   };
 

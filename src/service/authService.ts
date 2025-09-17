@@ -15,14 +15,14 @@ const authService = {
   },
 
   async logout(): Promise<void> {
-    await apiClient.post("/logout");
+    await apiClient.get("/logout");
     localStorage.removeItem("token");
   },
 
   async changePassword(
     payload: changePasswordRequest,
   ): Promise<changePasswordResponse> {
-    const response = await apiClient.post("/change-password", payload);
+    const response = await apiClient.put("/change-password", payload);
 
     return response.data;
   },

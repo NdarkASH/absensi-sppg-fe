@@ -3,8 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, CardBody, Input } from "@heroui/react";
 
-import authService from "../service/authService";
-
 import { useAuth } from "@/components/AuthUser";
 import { ThemeSwitch } from "@/components/theme-switch";
 
@@ -22,9 +20,7 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const loginResponse = await authService.login({ email, password });
-
-      login(loginResponse.token);
+      await login({ email, password });
       navigate("/home");
     } catch (error: any) {
       setError(error?.response?.data?.message || "Login failed");

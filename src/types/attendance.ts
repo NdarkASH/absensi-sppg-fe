@@ -1,5 +1,3 @@
-import { AxiosResponse } from "axios";
-
 import { apiResponse } from "./apiResponse";
 import apiClient from "./client";
 

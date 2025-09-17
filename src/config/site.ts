@@ -14,7 +14,6 @@ export const siteConfig = {
     {
       label: "Dashboard",
       href: "/dashboard",
-      Role: Role.ADMIN,
     },
     {
       label: "attendance",
@@ -25,19 +24,29 @@ export const siteConfig = {
       href: "/logout",
     },
   ],
-  sideBarMenuItems: [
+  sideBarMenuGroups: [
     {
-      icon: "lucide:folder",
-      label: "Dashboard",
-      path: "/dashboard",
+      group: "Main",
+      items: [
+        {
+          icon: "lucide:circle-check-big",
+          label: "Attendance",
+          path: "/attendance",
+        },
+        { icon: "lucide:user-pen", label: "Biodata", path: "/me" },
+      ],
+    },
+    {
+      group: "Admin",
       role: Role.ADMIN,
+      items: [
+        {
+          icon: "lucide:folder",
+          label: "Dashboard",
+          path: "/dashboard",
+        },
+      ],
     },
-    {
-      icon: "lucide:circle-check-big",
-      label: "Attendance",
-      path: "/attendance",
-    },
-    { icon: "lucide:user-pen", label: "biodata", path: "/me" },
   ],
   links: {
     github: "https://github.com/frontio-ai/heroui",

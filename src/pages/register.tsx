@@ -34,7 +34,7 @@ const RegisterPage = () => {
       navigate("/home");
       toast.success("Account created please to login");
     } catch (error: any) {
-      setError(error?.response?.data?.message || "Login failed");
+      setError(error?.response?.data?.message || "Register failed");
       toast.error("Register error please try again");
     } finally {
       setIsLoading(false);

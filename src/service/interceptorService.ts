@@ -4,7 +4,11 @@ const interceptorService = {
   setup() {
     apiClient.interceptors.request.use(
       (config) => {
-        const token = localStorage.getItem("token");
+        const isDev = import.meta.env.MODE === "development";
+
+        const token = isDev
+          ? import.meta.env.VITE_DEV_FAKE_TOKEN
+          : localStorage.getItem("token");
 
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;

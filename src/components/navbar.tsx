@@ -8,17 +8,22 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@heroui/navbar";
+import { useState } from "react";
 
 import { useAuth } from "./AuthUser";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { LogOutIcon } from "@/components/icons";
-import { useLogout } from "@/types/logout";
 
 export const Navbar = () => {
-  const { logout, loading } = useLogout();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    logout();
+  };
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
@@ -49,11 +54,11 @@ export const Navbar = () => {
           {isAuthenticated && (
             <Button
               className="text-sm font-normal text-default-600 bg-default-100"
-              isDisabled={loading}
-              isLoading={loading}
+              isDisabled={isLoading}
+              isLoading={isLoading}
               startContent={<LogOutIcon className="text-danger" />}
               variant="flat"
-              onPress={logout}
+              onPress={handleLogout}
             >
               Logout
             </Button>

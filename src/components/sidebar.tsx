@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Tooltip } from "@heroui/react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useAuth } from "./AuthUser";
 
 import userService from "@/service/userService";
 import { siteConfig } from "@/config/site";
-import { userResponse } from "@/types/user";
+import { Role, userResponse } from "@/types/user";
 
 interface NavItemProps {
   icon: string;
@@ -21,8 +21,8 @@ interface NavItemProps {
 const NavItem = ({
   icon,
   label,
-  isActive = false,
-  isCollapsed = false,
+  isActive,
+  isCollapsed,
   onClick,
 }: NavItemProps) => (
   <Button
@@ -46,12 +46,17 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [collapsedGroups, setCollapsedGroups] = useState<
+    Record<string, boolean>
+  >({});
   const [isUser, setIsUser] = useState<userResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { token, logout, isAuthenticated } = useAuth();
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
+  const toggleGroup = (group: string) =>
+    setCollapsedGroups((prev) => ({ ...prev, [group]: !prev[group] }));
+
   const handleNavigation = (path: string) => navigate(path);
 
   useEffect(() => {
@@ -61,13 +66,12 @@ export const Sidebar = () => {
 
         return;
       }
-
       try {
         const response = await userService.getUser();
 
         setIsUser(response);
       } catch (error: any) {
-        if (error === 401) {
+        if (error?.status === 401) {
           logout();
           navigate("/login");
         }
@@ -79,11 +83,8 @@ export const Sidebar = () => {
     fetchUser();
   }, [token, isAuthenticated, logout, navigate]);
 
-  const menuItems = siteConfig.sideBarMenuItems.filter(
-    (item) => !item.role || item.role === isUser?.role,
-  );
-
   if (loading) return <div>Loading...</div>;
+
   const initials = isUser?.username?.charAt(0).toUpperCase();
 
   return (
@@ -92,9 +93,9 @@ export const Sidebar = () => {
         isCollapsed ? "w-20" : "w-60"
       }`}
     >
-      {/* Sidebar Header */}
+      {/* Collapse button */}
       <button
-        className={`absolute top-1/2 right-2 transform -translate-y-1/2 bg-primary-500 text-white rounded-full p-1 shadow z-50     ${isCollapsed ? "top-1/2 right-5" : "top-1/2 right-2 -translate-y-1/2"}`}
+        className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-primary-500 text-white rounded-full p-1 shadow"
         title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
         onClick={toggleSidebar}
       >
@@ -104,54 +105,74 @@ export const Sidebar = () => {
           width={20}
         />
       </button>
-      <div className="h-16 flex items-center px-4 border-b border-divider relative">
-        <div className="flex items-center gap-2 px-2">
-          <Icon
-            className="text-primary"
-            height={30}
-            icon="lucide:layers"
-            width={30}
-          />
-          {!isCollapsed && (
-            <span className="font-semibold text-lg">HeroUI App</span>
-          )}
-        </div>
 
-        {/* Toggle Button */}
+      {/* Header */}
+      <div className="h-16 flex items-center px-4 border-b border-divider">
+        <Icon
+          className="text-primary"
+          height={30}
+          icon="lucide:layers"
+          width={30}
+        />
+        {!isCollapsed && (
+          <span className="font-semibold text-lg ml-2">HeroUI App</span>
+        )}
       </div>
 
-      {/* Navigation */}
+      {/* Navigation with groups */}
       <nav className="flex-1 p-4 overflow-hidden">
-        {menuItems.map((item) => (
-          <NavItem
-            key={item.path}
-            icon={item.icon}
-            isActive={location.pathname === item.path}
-            isCollapsed={isCollapsed}
-            label={item.label}
-            path={item.path}
-            onClick={() => handleNavigation(item.path)}
-          />
-        ))}
+        {siteConfig.sideBarMenuGroups
+          .filter(
+            (group) =>
+              !group.role ||
+              isUser?.role === Role.ADMIN ||
+              group.role === isUser?.role,
+          )
+          .map((group) => (
+            <div key={group.group} className="mb-4">
+              {/* Group header */}
+              {!isCollapsed && (
+                <button
+                  className="flex items-center justify-between w-full text-xs font-semibold text-gray-500 uppercase mb-2"
+                  onClick={() => toggleGroup(group.group)}
+                >
+                  {group.group}
+                  <Icon
+                    height={16}
+                    icon={
+                      collapsedGroups[group.group]
+                        ? "lucide:chevron-right"
+                        : "lucide:chevron-down"
+                    }
+                    width={16}
+                  />
+                </button>
+              )}
+
+              {/* Group items */}
+              {!collapsedGroups[group.group] &&
+                group.items.map((item) => (
+                  <NavItem
+                    key={item.path}
+                    icon={item.icon}
+                    isActive={location.pathname === item.path}
+                    isCollapsed={isCollapsed}
+                    label={item.label}
+                    path={item.path}
+                    onClick={() => handleNavigation(item.path)}
+                  />
+                ))}
+            </div>
+          ))}
       </nav>
 
       {/* User Profile */}
       <Button
         disableRipple
-        className={`w-full transition-all duration-300 flex items-center justify-between ${
+        className={`w-full transition-all duration-300 flex items-center justify-start ${
           isCollapsed ? "px-6" : "px-4"
         }`}
         color="default"
-        endContent={
-          !isCollapsed && (
-            <Icon
-              className="text-default-400"
-              height={24}
-              icon="lucide:chevron-down"
-              width={24}
-            />
-          )
-        }
         startContent={
           <Tooltip content={isUser?.username} placement="right">
             <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-500">
@@ -162,10 +183,12 @@ export const Sidebar = () => {
         variant="flat"
       >
         {!isCollapsed && (
-          <div className="flex flex-col items-start">
-            <span className="text-sm font-medium">{isUser?.username}</span>
+          <div className="flex flex-col items-start ">
+            <span className="text-sm font-medium truncate block max-w-[120px]">
+              {isUser?.username}
+            </span>
             <Tooltip content={isUser?.email}>
-              <span className="text-xs text-default-500 truncate block max-w-[96px]">
+              <span className="text-xs text-default-500 truncate block max-w-[120px]">
                 {isUser?.email}
               </span>
             </Tooltip>

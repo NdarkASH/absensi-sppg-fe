@@ -8,11 +8,12 @@ import {
 } from "react";
 
 import authService from "@/service/authService";
+import { loginRequest } from "@/types/login";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
-  login: (token: string) => Promise<void>;
+  login: (payload: loginRequest) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -30,15 +31,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (token) setIsAuthenticated(true);
   }, [token]);
 
-  const login = useCallback(async (newToken: string) => {
-    localStorage.setItem("token", newToken);
-    setToken(token);
+  const login = useCallback(async (payload: loginRequest) => {
+    const data = await authService.login(payload);
+
+    localStorage.setItem("token", data.token);
+    setToken(data.token);
     setIsAuthenticated(true);
   }, []);
 
   const logout = useCallback(async () => {
     await authService.logout();
-    localStorage.removeItem("token");
     setToken(null);
     setIsAuthenticated(false);
   }, []);
