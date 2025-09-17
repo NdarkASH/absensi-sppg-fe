@@ -1,5 +1,3 @@
-import { Role } from "@/types/user";
-
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
@@ -27,6 +25,7 @@ export const siteConfig = {
   sideBarMenuGroups: [
     {
       group: "Main",
+      role: "USER",
       items: [
         {
           icon: "lucide:circle-check-big",
@@ -38,7 +37,7 @@ export const siteConfig = {
     },
     {
       group: "Admin",
-      role: Role.ADMIN,
+      role: "ADMIN",
       items: [
         {
           icon: "lucide:folder",

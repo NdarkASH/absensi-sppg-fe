@@ -7,7 +7,7 @@ import { useAuth } from "./AuthUser";
 
 import userService from "@/service/userService";
 import { siteConfig } from "@/config/site";
-import { Role, userResponse } from "@/types/user";
+import { userResponse } from "@/types/user";
 
 interface NavItemProps {
   icon: string;
@@ -89,7 +89,7 @@ export const Sidebar = () => {
 
   return (
     <div
-      className={`h-screen border-r border-divider bg-content1 flex flex-col transition-all duration-300 relative overflow-x-hidden ${
+      className={`h-full border-r border-divider bg-content1 flex flex-col transition-all duration-300 relative overflow-x-hidden ${
         isCollapsed ? "w-20" : "w-60"
       }`}
     >
@@ -106,48 +106,35 @@ export const Sidebar = () => {
         />
       </button>
 
-      {/* Header */}
-      <div className="h-16 flex items-center px-4 border-b border-divider">
-        <Icon
-          className="text-primary"
-          height={30}
-          icon="lucide:layers"
-          width={30}
-        />
-        {!isCollapsed && (
-          <span className="font-semibold text-lg ml-2">HeroUI App</span>
-        )}
-      </div>
-
       {/* Navigation with groups */}
       <nav className="flex-1 p-4 overflow-hidden">
         {siteConfig.sideBarMenuGroups
           .filter(
             (group) =>
               !group.role ||
-              isUser?.role === Role.ADMIN ||
+              isUser?.role === "ADMIN" ||
               group.role === isUser?.role,
           )
           .map((group) => (
             <div key={group.group} className="mb-4">
               {/* Group header */}
-              {!isCollapsed && (
-                <button
-                  className="flex items-center justify-between w-full text-xs font-semibold text-gray-500 uppercase mb-2"
-                  onClick={() => toggleGroup(group.group)}
-                >
-                  {group.group}
-                  <Icon
-                    height={16}
-                    icon={
-                      collapsedGroups[group.group]
-                        ? "lucide:chevron-right"
-                        : "lucide:chevron-down"
-                    }
-                    width={16}
-                  />
-                </button>
-              )}
+              <button
+                className={`flex items-center w-full text-xs font-semibold uppercase mb-2 transition-all duration-300
+        ${isCollapsed ? "justify-center text-gray-400" : "justify-between text-gray-500"}`}
+                onClick={() => toggleGroup(group.group)}
+              >
+                {/* teks muncul hanya kalau sidebar expand */}
+                {!isCollapsed && <span>{group.group}</span>}
+                <Icon
+                  height={16}
+                  icon={
+                    collapsedGroups[group.group]
+                      ? "lucide:chevron-right"
+                      : "lucide:chevron-down"
+                  }
+                  width={16}
+                />
+              </button>
 
               {/* Group items */}
               {!collapsedGroups[group.group] &&

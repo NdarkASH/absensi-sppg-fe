@@ -1,13 +1,8 @@
-export enum Role {
-  ADMIN,
-  USER,
-}
-
 export interface userResponse {
   userId: string;
   username: string;
   email: string;
-  role: Role;
+  role: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;

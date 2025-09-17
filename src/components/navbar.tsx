@@ -30,7 +30,7 @@ export const Navbar = () => {
       {/* Brand */}
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
-          <Link className="flex items-center gap-1" color="foreground" href="/">
+          <Link className="flex items-center gap-1" color="foreground" href="/home">
             <img
               alt="Badan Gizi Nasional"
               className="h-9 w-9 m-1"

@@ -1,20 +1,8 @@
-import { Navbar } from "@/components/navbar";
-import { Sidebar } from "@/components/sidebar";
-
 function Home() {
   return (
-    <div className="flex h-screen bg-content1">
-      {/* Sidebar kiri */}
-      <Sidebar />
-
-      {/* Konten kanan */}
-      <div className="flex flex-col flex-1">
-        {/* Navbar atas */}
-        <Navbar />
-
-        {/* Konten halaman */}
-        <div className="p-4">Home</div>
-      </div>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">Home</h1>
+      <p>Selamat datang di halaman dashboard!</p>
     </div>
   );
 }
