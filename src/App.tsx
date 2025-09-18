@@ -20,10 +20,10 @@ function App() {
     <AuthProvider>
       <Toaster />
       <Routes>
-        <Route element={<LoginPage />} path="/login" />
-        <Route element={<RegisterPage />} path="/register" />
-
         <Route element={<DefaultLayout />}>
+          <Route element={<LoginPage />} path="/login" />
+          <Route element={<RegisterPage />} path="/register" />
+
           <Route element={<IndexPage />} path="/" />
           <Route element={<Home />} path="/home" />
           <Route element={<ChangePassword />} path="/change-password" />

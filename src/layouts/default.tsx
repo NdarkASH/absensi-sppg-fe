@@ -8,10 +8,14 @@ export default function DefaultLayout() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div
+      className={`flex flex-col overflow-hidden ${
+        isAuthenticated ? "h-screen" : "h-min-screen"
+      }`}
+    >
+      {" "}
       {/* Navbar */}
       {isAuthenticated && <Navbar />}
-
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar di kiri */}
         {isAuthenticated && (

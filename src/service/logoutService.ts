@@ -12,7 +12,7 @@ export function useLogoutService() {
   const logout = async () => {
     try {
       setLoading(true);
-      contextLogout(); // clear token & state dari AuthContext
+      contextLogout();
       toast.success("Berhasil logout!");
       navigate("/login");
     } finally {
