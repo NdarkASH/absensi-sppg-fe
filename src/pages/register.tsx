@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card, CardBody, Input } from "@heroui/react";
 import toast from "react-hot-toast";
 
-import { createUser } from "@/service/createUser";
+import authService from "@/service/authService";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +28,7 @@ const RegisterPage = () => {
     }
 
     try {
-      await createUser({ username, email, password });
+      await authService.register({ username, email, password });
 
       navigate("/home");
       toast.success("Account created, please login");

@@ -23,6 +23,7 @@ function App() {
         <Route element={<DefaultLayout />}>
           <Route element={<LoginPage />} path="/login" />
           <Route element={<RegisterPage />} path="/register" />
+          <Route element={<DatePage />} path="/date" />
 
           <Route element={<IndexPage />} path="/" />
           <Route element={<Home />} path="/home" />
