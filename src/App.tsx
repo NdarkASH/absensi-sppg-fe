@@ -8,6 +8,7 @@ import RegisterPage from "./pages/register";
 import ChangePassword from "./pages/changePassword";
 import interceptorService from "./service/interceptorService";
 import DefaultLayout from "./layouts/default";
+import DatePage from "./pages/date";
 
 import IndexPage from "@/pages/login";
 import LoginPage from "@/pages/login";
@@ -24,7 +25,6 @@ function App() {
           <Route element={<LoginPage />} path="/login" />
           <Route element={<RegisterPage />} path="/register" />
           <Route element={<DatePage />} path="/date" />
-
           <Route element={<IndexPage />} path="/" />
           <Route element={<Home />} path="/home" />
           <Route element={<ChangePassword />} path="/change-password" />

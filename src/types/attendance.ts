@@ -1,3 +1,4 @@
+import { DateResponse } from "./date";
 export enum status {
   "ALFA",
   "HADIR",
@@ -21,6 +22,6 @@ export interface AttendanceResponse {
   status: status;
   totalHours: number;
   notes: string;
-  dates: string;
+  dates: DateResponse;
   user: string;
 }

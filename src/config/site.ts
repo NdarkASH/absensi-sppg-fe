@@ -33,6 +33,7 @@ export const siteConfig = {
           path: "/attendance",
         },
         { icon: "lucide:user-pen", label: "Biodata", path: "/me" },
+        { icon: "lucide:calendar", label: "Date", path: "/date" },
       ],
     },
     {
