@@ -11,7 +11,7 @@ import RegisterPage from "./pages/register";
 import LoginPage from "./pages/login";
 
 function AppRoutes() {
-  const { isAuthenticated } = useAuth(); // Sekarang aman karena sudah di dalam AuthProvider
+  const { isAuthenticated } = useAuth();
 
   return (
     <Routes>
