@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Calendar } from "@heroui/react";
+import { getLocalTimeZone, parseDate } from "@internationalized/date";
 
 import { PagingResponse } from "../types/Paging";
 
@@ -9,6 +11,8 @@ export default function AttendanceList() {
   const [attendancePage, setAttendancePage] =
     useState<PagingResponse<AttendanceResponse> | null>(null);
 
+  const dateNow = getLocalTimeZone();
+
   useEffect(() => {
     // fetch page 0, size 5, sort by date descending
     attendanceService
@@ -18,6 +22,14 @@ export default function AttendanceList() {
 
   return (
     <div>
+      <div>
+        <Calendar aria-label="Date (No Selection)" />
+        <Calendar
+          aria-label="Date (Uncontrolled)"
+          defaultValue={parseDate(dateNow)}
+        />
+      </div>
+
       <h1>Attendance List</h1>
       {attendancePage && (
         <ul>
